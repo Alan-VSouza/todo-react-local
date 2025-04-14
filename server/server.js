@@ -1,20 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const todoRoutes = require('./routes/todoRoutes'); 
+
 const app = express();
+
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); 
 
-// Armazenamento em memória
-let todos = [];
-
-const todoRoutes = require('./routes/todoRoutes');
-
-// Adiciona os roteadores sem passar `todos` como parâmetro
-app.use('/api/todos', todoRoutes);
+app.use('/api/todos', todoRoutes); 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 
-module.exports = app;
+module.exports = app; 

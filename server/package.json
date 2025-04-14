@@ -23,7 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "jest --runInBand --detectOpenHandles --forceExit",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
