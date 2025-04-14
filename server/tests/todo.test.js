@@ -49,5 +49,5 @@ describe('Todo API', () => {
 
     expect(response.status).toBe(400);  // Espera o status 400 por falta da tarefa
     expect(response.body.message).toBe('Task is required');  // Verifica a mensagem de erro
-  });
+  }); // aqui
 });
