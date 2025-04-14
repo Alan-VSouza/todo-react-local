@@ -1,70 +1,115 @@
-# Getting Started with Create React App
+# Todo List API
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este é um simples aplicativo **Todo List** desenvolvido com **Node.js**, **Express** para o backend e **React** para o frontend. A principal característica deste projeto é que ele **não utiliza MongoDB** ou qualquer outro banco de dados persistente, utilizando um **armazenamento em memória** para gerenciar as tarefas.
 
-## Available Scripts
+## Descrição do Projeto
 
-In the project directory, you can run:
+O projeto permite ao usuário:
 
-### `npm start`
+- **Adicionar tarefas**
+- **Listar tarefas**
+- **Excluir tarefas**
+- **Marcar tarefas como concluídas**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Todas as tarefas são armazenadas em um **array** na memória do servidor, o que significa que ao reiniciar o servidor, as tarefas são perdidas. Este projeto é ideal para fins de aprendizado e para quem quer entender a interação entre frontend e backend em um sistema simples.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tecnologias Utilizadas
 
-### `npm test`
+### Backend:
+- **Node.js**
+- **Express**
+- **Axios** (para fazer requisições HTTP do frontend)
+- **CORS** (para permitir o acesso do frontend ao backend)
+- **Armazenamento em memória** (sem banco de dados persistente)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend:
+- **React**
+- **Axios** (para fazer requisições HTTP para o backend)
+- **React Toastify** (para exibir notificações)
+- **SweetAlert2** (para exibir pop-ups de confirmação)
 
-### `npm run build`
+## Como Rodar o Projeto
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Configuração do Backend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Para rodar o backend:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone o repositório ou baixe o código do backend.
 
-### `npm run eject`
+2. No diretório do backend, instale as dependências:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    ```bash
+    npm install
+    ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Inicie o servidor backend:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    ```bash
+    node server.js
+    ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   O servidor backend estará rodando em `http://localhost:5000`.
 
-## Learn More
+### 2. Configuração do Frontend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Para rodar o frontend:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Clone o repositório ou baixe o código do frontend.
 
-### Code Splitting
+2. No diretório do frontend, instale as dependências:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    ```bash
+    npm install
+    ```
 
-### Analyzing the Bundle Size
+3. Inicie o servidor frontend:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    ```bash
+    npm start
+    ```
 
-### Making a Progressive Web App
+   O frontend estará rodando em `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 3. Testando a Aplicação
 
-### Advanced Configuration
+Após iniciar o backend e o frontend, abra o navegador e vá até `http://localhost:3000`. Você verá o aplicativo de **Todo List** com as funcionalidades de adicionar, excluir e marcar tarefas como concluídas.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Como Funciona o Armazenamento de Tarefas
 
-### Deployment
+As tarefas são armazenadas em um **array** na memória do servidor, no arquivo `todoRoutes.js`. Não há nenhum banco de dados persistente sendo usado, portanto:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **Ao adicionar uma tarefa**, ela é adicionada ao array `todos`.
+- **Ao excluir uma tarefa**, a tarefa é removida do array.
+- **Ao marcar uma tarefa como concluída**, o status `done` da tarefa é alterado.
 
-### `npm run build` fails to minify
+Lembre-se de que, como o armazenamento é em memória, **todos os dados serão perdidos ao reiniciar o servidor**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Funcionalidades
+
+### 1. Adicionar tarefa:
+- Envia um `POST` para a rota `/api/todos` com o nome da tarefa.
+
+   Exemplo:
+
+   ```json
+   { "task": "Comprar leite" }
+
+### 2. Listar todas as tarefas:
+- Envia um `GET` para a rota `/api/todos` e retorna um array com todas as tarefas.
+
+### 3. Excluir tarefa:
+- Envia um `DELETE` para a rota `/api/todos/{id}` com o ID da tarefa a ser excluída.
+
+### 4. Marcar tarefa como concluída:
+- Envia um `PATCH` para a rota `/api/todos/{id}` com o status `done` da tarefa alterado.
+
+## Notas
+- Este projeto utiliza **armazenamento em memória** e **não possui persistência de dados**.
+- Ao reiniciar o servidor, **todas as tarefas serão perdidas**.
+- O código de backend utiliza rotas simples de **GET**, **POST**, **DELETE** e **PATCH** para gerenciar as tarefas.
+
+## Contribuição
+Se você deseja contribuir com este projeto, fique à vontade para enviar um **pull request** ou abrir um **issue** caso encontre algum problema.
+
+## Licença
+Este projeto é de código aberto e licenciado sob a **MIT License**.
