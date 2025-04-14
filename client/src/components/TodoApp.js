@@ -10,7 +10,7 @@ const TodoApp = () => {
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/todos').then((response) => {
-      setTodos(response.data);
+      setTodos(response.data);  // Atualiza o estado com a lista de tarefas
     });
   }, []);
 
@@ -18,8 +18,8 @@ const TodoApp = () => {
     axios
       .post('http://localhost:5000/api/todos', { task: newTodo })
       .then((response) => {
-        setTodos([...todos, response.data]);
-        setNewTodo('');
+        setTodos([...todos, response.data]); // Adiciona a nova tarefa na lista
+        setNewTodo(''); // Limpa o campo de entrada
       });
   };
 
@@ -38,7 +38,7 @@ const TodoApp = () => {
         axios
           .delete(`http://localhost:5000/api/todos/${id}`)
           .then(() => {
-            setTodos(todos.filter((todo) => todo._id !== id));
+            setTodos(todos.filter((todo) => todo._id !== id)); // Remove a tarefa da lista
             toast.success('Tarefa excluída com sucesso!', {
               position: 'bottom-right',
               autoClose: 5000,
