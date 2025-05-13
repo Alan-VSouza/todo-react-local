@@ -59,7 +59,7 @@ CMD ["node", "server.js"]
 
 O frontend é um aplicativo React que será servido pelo Nginx. O Dockerfile para o frontend está configurado para construir o aplicativo com npm run build e servir os arquivos estáticos através do Nginx.
 
-# Dockerfile para o Frontend:
+## Dockerfile para o Frontend:
 
 #### - Usando a imagem oficial do Node.js
 FROM node:16 AS builder
@@ -144,9 +144,7 @@ docker-compose up --build
 Isso irá construir as imagens do backend e frontend, além de configurar o banco de dados MySQL, se necessário.
 
 ## Acessar o Frontend e Backend:
-- O frontend estará disponível em http://localhost.
-
-- O backend estará disponível em http://localhost:3001.
+- O frontend estará disponível em http://localhost:3000
 
 ## Parar os containers:
 Para parar os containers, execute:
