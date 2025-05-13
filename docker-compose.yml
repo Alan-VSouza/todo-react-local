@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: server-container
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  
+  frontend:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    container_name: client-container
+    ports:
+      - "3000:80" 
+    depends_on:
+      - backend
+  
+  db:
+    image: mysql:5.7
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: app_db
+    command:
+      --explicit_defaults_for_timestamp=TRUE 
+    ports:
+      - "3306:3306"

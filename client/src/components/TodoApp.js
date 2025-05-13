@@ -9,17 +9,18 @@ const TodoApp = () => {
   const [newTodo, setNewTodo] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/todos').then((response) => {
-      setTodos(response.data); 
-    });
+    axios.get('http://server:5000/api/todos')  
+      .then((response) => {
+        setTodos(response.data);
+      });
   }, []);
 
   const addTodo = () => {
     axios
-      .post('http://localhost:5000/api/todos', { task: newTodo })
+      .post('http://server:5000/api/todos', { task: newTodo }) 
       .then((response) => {
         setTodos([...todos, response.data]);
-        setNewTodo(''); 
+        setNewTodo('');
       });
   };
 
@@ -36,7 +37,7 @@ const TodoApp = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/api/todos/${id}`)
+          .delete(`http://server:5000/api/todos/${id}`)  
           .then(() => {
             setTodos(todos.filter((todo) => todo._id !== id));
             toast.success('Tarefa excluída com sucesso!', {
@@ -62,7 +63,7 @@ const TodoApp = () => {
 
   const completeTodo = (id, currentStatus) => {
     axios
-      .patch(`http://localhost:5000/api/todos/${id}`, { done: !currentStatus })
+      .patch(`http://server:5000/api/todos/${id}`, { done: !currentStatus }) 
       .then((response) => {
         setTodos(
           todos.map((todo) =>

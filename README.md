@@ -28,51 +28,132 @@ Todas as tarefas são armazenadas em um **array** na memória do servidor, o que
 - **React Toastify** (para exibir notificações)
 - **SweetAlert2** (para exibir pop-ups de confirmação)
 
-## Como Rodar o Projeto
+## Como Rodar o Projeto com Docker
 
-### 1. Configuração do Backend
+Este projeto pode ser facilmente executado utilizando Docker. Para isso, vamos utilizar um **Dockerfile** para o frontend e outro para o backend, além de um **docker-compose.yml** para orquestrar os serviços.
 
-Para rodar o backend:
+## 1. Configuração do Backend
 
-1. Clone o repositório ou baixe o código do backend.
+O backend está configurado para ser executado usando **Node.js**. O Dockerfile para o backend está configurado para construir e rodar o servidor.
 
-2. No diretório do backend, instale as dependências:
+## Dockerfile para o Backend:
 
-    ```bash
-    npm install
-    ```
+#### Usando a imagem oficial do Node.js
+FROM node:16
 
-3. Inicie o servidor backend:
+WORKDIR /app
 
-    ```bash
-    node server.js
-    ```
+#### Copiar as dependências do backend
+COPY server/package*.json ./
+RUN npm install
 
-   O servidor backend estará rodando em `http://localhost:5000`.
+#### Copiar o código do backend
+COPY server/ .
+
+#### Expor a porta onde o backend estará rodando
+EXPOSE 3001
+
+CMD ["node", "server.js"]
 
 ### 2. Configuração do Frontend
 
-Para rodar o frontend:
+O frontend é um aplicativo React que será servido pelo Nginx. O Dockerfile para o frontend está configurado para construir o aplicativo com npm run build e servir os arquivos estáticos através do Nginx.
 
-1. Clone o repositório ou baixe o código do frontend.
+# Dockerfile para o Frontend:
 
-2. No diretório do frontend, instale as dependências:
+# Usando a imagem oficial do Node.js
+FROM node:16 AS builder
 
-    ```bash
-    npm install
-    ```
+WORKDIR /app
 
-3. Inicie o servidor frontend:
+# Copiar as dependências do frontend
+COPY client/package*.json ./
+RUN npm install
 
-    ```bash
-    npm start
-    ```
+# Copiar o código do frontend
+COPY client/ .
 
-   O frontend estará rodando em `http://localhost:3000`.
+# Rodar o build da aplicação React
+RUN npm run build
 
-### 3. Testando a Aplicação
+# Usar a imagem Nginx para servir os arquivos estáticos
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
 
-Após iniciar o backend e o frontend, abra o navegador e vá até `http://localhost:3000`. Você verá o aplicativo de **Todo List** com as funcionalidades de adicionar, excluir e marcar tarefas como concluídas.
+# Expor a porta do Nginx
+EXPOSE 80
+
+# Iniciar o Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+## 3. Orquestrando com Docker Compose
+
+Utilizando docker-compose, podemos orquestrar o serviço de frontend, backend e banco de dados (se necessário). Aqui está o arquivo docker-compose.yml:
+
+### docker-compose.yml:
+```dockerfile
+version: '3'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: backend-container
+    ports:
+      - "3001:3001"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: frontend-container
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  db:
+    image: mysql:5.7
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: app_db
+    ports:
+      - "3306:3306"
+```
+
+## 4. Como Rodar o Projeto com Docker
+
+Para rodar o projeto com Docker, siga os passos abaixo:
+
+### Clone o repositório:
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+```
+
+### Construir e rodar os containers:
+
+No diretório onde está localizado o docker-compose.yml, execute o seguinte comando para construir as imagens e iniciar os containers:
+
+```bash
+docker-compose up --build
+```
+
+Isso irá construir as imagens do backend e frontend, além de configurar o banco de dados MySQL, se necessário.
+
+## Acessar o Frontend e Backend:
+- O frontend estará disponível em http://localhost.
+
+- O backend estará disponível em http://localhost:3001.
+
+## Parar os containers:
+Para parar os containers, execute:
+
+```bash
+docker-compose down
+```
 
 ## Como Funciona o Armazenamento de Tarefas
 
@@ -93,6 +174,7 @@ Lembre-se de que, como o armazenamento é em memória, **todos os dados serão p
 
    ```json
    { "task": "Comprar leite" }
+   ```
 
 ### 2. Listar todas as tarefas:
 - Envia um `GET` para a rota `/api/todos` e retorna um array com todas as tarefas.
