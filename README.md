@@ -61,29 +61,29 @@ O frontend é um aplicativo React que será servido pelo Nginx. O Dockerfile par
 
 # Dockerfile para o Frontend:
 
-# Usando a imagem oficial do Node.js
+#### - Usando a imagem oficial do Node.js
 FROM node:16 AS builder
 
 WORKDIR /app
 
-# Copiar as dependências do frontend
+#### - Copiar as dependências do frontend
 COPY client/package*.json ./
 RUN npm install
 
-# Copiar o código do frontend
+#### - Copiar o código do frontend
 COPY client/ .
 
-# Rodar o build da aplicação React
+#### - Rodar o build da aplicação React
 RUN npm run build
 
-# Usar a imagem Nginx para servir os arquivos estáticos
+#### - Usar a imagem Nginx para servir os arquivos estáticos
 FROM nginx:alpine
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Expor a porta do Nginx
+#### - Expor a porta do Nginx
 EXPOSE 80
 
-# Iniciar o Nginx
+#### - Iniciar o Nginx
 CMD ["nginx", "-g", "daemon off;"]
 
 ## 3. Orquestrando com Docker Compose
