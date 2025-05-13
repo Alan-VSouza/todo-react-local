@@ -129,8 +129,8 @@ Para rodar o projeto com Docker, siga os passos abaixo:
 ### Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
+git clone https://github.com/Alan-VSouza/todo-react-local.git
+cd todo-react-local
 ```
 
 ### Construir e rodar os containers:
